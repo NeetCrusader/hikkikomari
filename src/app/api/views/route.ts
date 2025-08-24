@@ -34,8 +34,7 @@ export async function POST(req: NextRequest) {
 
     await client.query(
       `INSERT INTO visits (site, ip, user_agent) 
-       VALUES ($1, $2, $3) 
-       ON CONFLICT (site, ip) DO NOTHING`,
+       VALUES ($1, $2, $3)`,
       [site, ip, userAgent],
     );
 
