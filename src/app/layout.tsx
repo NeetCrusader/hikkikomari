@@ -1,7 +1,7 @@
 import { Inter } from 'next/font/google';
 import OverlayWrapper from '@/components/OverlayWrapper';
 import DynamicTitleUpdater from '@/components/DynamicTitleUpdater';
-import { Metadata } from 'amphibian-seo';
+import { metadata } from 'amphibian-seo';
 import '@/lib/fontawesome';
 import './globals.css';
 
@@ -12,7 +12,7 @@ const inter = Inter({
 });
 
 export const generateMetadata = () => {
-  return Metadata({
+  return metadata({
     title: {
       default: 'hi!!!',
       template: '%title%',
