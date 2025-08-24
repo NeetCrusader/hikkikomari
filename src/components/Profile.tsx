@@ -11,7 +11,7 @@ export default function Profile() {
   const [presence, setPresence] = useState<Presence | null>(null);
 
   useEffect(() => {
-    const socket = new WebSocket(process.env.RICH_PRESENCE as string);
+    const socket = new WebSocket(process.env.NEXT_PUBLIC_RICH_PRESENCE as string);
 
     const handleOpen = () => {
       console.log('WebSocket connected');
