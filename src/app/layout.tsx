@@ -23,6 +23,7 @@ export const generateMetadata = () => {
       title: 'hi!!!',
       description: ' ͝ ꒡⠀† ݁  ⏝∔⏝  ݁ †⠀꒡ ͝',
       siteName: 'neeurotica',
+      type: 'website',
     },
     mobileApp: {
       themeColor: '#ffffff',
