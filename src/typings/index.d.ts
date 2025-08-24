@@ -48,3 +48,5 @@ export interface PresenceCardProps {
   gradient: string;
   delay: number;
 }
+
+export type Direction = 'top' | 'bottom' | 'left' | 'right';

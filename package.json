@@ -1,6 +1,6 @@
 {
   "name": "hikkikomari.lol",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "scripts": {
     "format": "biome format --write .",
@@ -19,10 +19,12 @@
     "@fortawesome/free-regular-svg-icons": "^7.0.0",
     "@fortawesome/free-solid-svg-icons": "^7.0.0",
     "@fortawesome/react-fontawesome": "^3.0.0",
+    "@types/pg": "^8.15.5",
     "amphibian-seo": "^1.2.9",
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.540.0",
     "next": "15.4.6",
+    "pg": "^8.16.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-responsive-carousel": "^3.2.23"

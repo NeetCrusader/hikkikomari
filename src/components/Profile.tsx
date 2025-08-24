@@ -6,9 +6,20 @@ import Loading from './Loading';
 import PresenceCard from './PresenceCard';
 import SvgImage from './SvgImage';
 import SocialLinks from './SocialLinks';
+import Views from './Views';
 
 export default function Profile() {
   const [presence, setPresence] = useState<Presence | null>(null);
+  const [views, setViews] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch('/api/views', { method: 'POST' }).catch(console.error);
+
+    fetch('/api/views')
+      .then((res) => res.json())
+      .then((data) => setViews(data.total))
+      .catch(console.error);
+  }, []);
 
   useEffect(() => {
     const socket = new WebSocket(process.env.NEXT_PUBLIC_RICH_PRESENCE as string);
@@ -46,7 +57,8 @@ export default function Profile() {
   if (!presence) return <Loading />;
 
   return (
-    <div className="bg-black/10 border border-neutral-600/20 w-full max-w-xl mx-auto p-8 rounded-lg shadow-lg backdrop-blur-sm">
+    <div className="relative bg-black/10 border border-neutral-600/20 w-full max-w-xl mx-auto p-8 rounded-lg shadow-lg backdrop-blur-sm">
+      <Views views={views} />
       <div className="flex flex-col items-center space-y-4">
         <SvgImage
           src={presence.pfp}

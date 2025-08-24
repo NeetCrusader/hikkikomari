@@ -3,24 +3,18 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faSpotify,
-  faInstagram,
-  faReddit,
-  faSteam,
-  faTwitter,
-} from '@fortawesome/free-brands-svg-icons';
+import '@/lib/fontawesome';
 import { SOCIALS } from '@/config/socials';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { IconLookup } from '@fortawesome/fontawesome-svg-core';
+import type { Direction } from '@/typings';
 
-type Direction = 'top' | 'bottom' | 'left' | 'right';
-
-const socialsData = [
-  { name: 'Spotify', icon: faSpotify, url: SOCIALS.spotify },
-  { name: 'Instagram', icon: faInstagram, url: SOCIALS.instagram },
-  { name: 'Reddit', icon: faReddit, url: SOCIALS.reddit },
-  { name: 'Steam', icon: faSteam, url: SOCIALS.steam },
-  { name: 'X', icon: faTwitter, url: SOCIALS.x },
+const socialsData: { name: string; icon: IconLookup; url: string }[] = [
+  { name: 'Spotify', icon: { prefix: 'fab', iconName: 'spotify' }, url: SOCIALS.spotify },
+  { name: 'Instagram', icon: { prefix: 'fab', iconName: 'instagram' }, url: SOCIALS.instagram },
+  { name: 'Reddit', icon: { prefix: 'fab', iconName: 'reddit' }, url: SOCIALS.reddit },
+  { name: 'Steam', icon: { prefix: 'fab', iconName: 'steam' }, url: SOCIALS.steam },
+  { name: 'X', icon: { prefix: 'fab', iconName: 'x-twitter' }, url: SOCIALS.x },
 ];
 
 export default function SocialLinks() {
