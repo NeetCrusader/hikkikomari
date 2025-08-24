@@ -24,11 +24,18 @@ function isDbError(err: unknown): err is { code: string } {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => ({}));
+    const site = getSiteFromHost(req);
+
+    if (!site) {
+      return NextResponse.json({ success: false, error: 'Missing host header' }, { status: 400 });
+    }
 
     if (body.action === 'count') {
       const client = await pool.connect();
       try {
-        const res = await client.query('SELECT COUNT(*) as total FROM visits');
+        const res = await client.query('SELECT COUNT(*) as total FROM visits WHERE site = $1', [
+          site,
+        ]);
         const total = res.rows[0]?.total ?? 0;
         return NextResponse.json({ success: true, total: Number(total) });
       } finally {
@@ -38,9 +45,8 @@ export async function POST(req: NextRequest) {
 
     const ip = getClientIp(req);
     const userAgent = req.headers.get('user-agent');
-    const site = getSiteFromHost(req);
 
-    if (!ip || !userAgent || !site) {
+    if (!ip || !userAgent) {
       return NextResponse.json(
         { success: false, error: 'Missing required headers' },
         { status: 400 },
@@ -55,17 +61,21 @@ export async function POST(req: NextRequest) {
         userAgent,
       ]);
 
-      const res = await client.query('SELECT COUNT(*) as total FROM visits');
+      const res = await client.query('SELECT COUNT(*) as total FROM visits WHERE site = $1', [
+        site,
+      ]);
       const total = res.rows[0]?.total ?? 0;
 
       return NextResponse.json({ success: true, total: Number(total) });
     } catch (err: unknown) {
       if (isDbError(err) && err.code === '23505') {
-        const res = await client.query('SELECT COUNT(*) as total FROM visits');
+        const res = await client.query('SELECT COUNT(*) as total FROM visits WHERE site = $1', [
+          site,
+        ]);
         const total = res.rows[0]?.total ?? 0;
         return NextResponse.json({
           success: true,
-          message: 'Visit already registered',
+          message: 'Visit already registered with this IP and User-Agent',
           total: Number(total),
         });
       }
