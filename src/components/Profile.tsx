@@ -13,11 +13,11 @@ export default function Profile() {
   const [views, setViews] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('/api/views', { method: 'POST' }).catch(console.error);
-
-    fetch('/api/views')
+    fetch('/api/views', { method: 'POST' })
       .then((res) => res.json())
-      .then((data) => setViews(data.total))
+      .then((data) => {
+        if (data.total) setViews(data.total);
+      })
       .catch(console.error);
   }, []);
 

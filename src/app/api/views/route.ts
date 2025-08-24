@@ -27,25 +27,27 @@ export async function POST(req: NextRequest) {
   const site = getSiteFromHost(req);
 
   if (!ip || !userAgent || !site) {
-    return NextResponse.json(
-      { success: false, error: 'Missing required headers' },
-      { status: 400 },
-    );
+    return NextResponse.json({ success: false, error: 'Missing required headers' }, { status: 400 });
   }
 
   try {
     const client = await pool.connect();
 
     try {
-      await client.query(`INSERT INTO visits (site, ip, user_agent) VALUES ($1, $2, $3)`, [
-        site,
-        ip,
-        userAgent,
-      ]);
-      return NextResponse.json({ success: true });
+      await client.query(
+        `INSERT INTO visits (site, ip, user_agent) VALUES ($1, $2, $3)`,
+        [site, ip, userAgent]
+      );
+
+      const res = await client.query('SELECT COUNT(*) as total FROM visits');
+      const total = res.rows[0]?.total ?? 0;
+
+      return NextResponse.json({ success: true, total: Number(total) });
     } catch (err: unknown) {
       if (isDbError(err) && err.code === '23505') {
-        return NextResponse.json({ success: true, message: 'Visit already registered' });
+        const res = await client.query('SELECT COUNT(*) as total FROM visits');
+        const total = res.rows[0]?.total ?? 0;
+        return NextResponse.json({ success: true, message: 'Visit already registered', total: Number(total) });
       }
       throw err;
     } finally {
