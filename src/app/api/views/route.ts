@@ -22,22 +22,38 @@ function isDbError(err: unknown): err is { code: string } {
 }
 
 export async function POST(req: NextRequest) {
-  const ip = getClientIp(req);
-  const userAgent = req.headers.get('user-agent');
-  const site = getSiteFromHost(req);
-
-  if (!ip || !userAgent || !site) {
-    return NextResponse.json({ success: false, error: 'Missing required headers' }, { status: 400 });
-  }
-
   try {
-    const client = await pool.connect();
+    const body = await req.json().catch(() => ({}));
 
-    try {
-      await client.query(
-        `INSERT INTO visits (site, ip, user_agent) VALUES ($1, $2, $3)`,
-        [site, ip, userAgent]
+    if (body.action === 'count') {
+      const client = await pool.connect();
+      try {
+        const res = await client.query('SELECT COUNT(*) as total FROM visits');
+        const total = res.rows[0]?.total ?? 0;
+        return NextResponse.json({ success: true, total: Number(total) });
+      } finally {
+        client.release();
+      }
+    }
+
+    const ip = getClientIp(req);
+    const userAgent = req.headers.get('user-agent');
+    const site = getSiteFromHost(req);
+
+    if (!ip || !userAgent || !site) {
+      return NextResponse.json(
+        { success: false, error: 'Missing required headers' },
+        { status: 400 },
       );
+    }
+
+    const client = await pool.connect();
+    try {
+      await client.query(`INSERT INTO visits (site, ip, user_agent) VALUES ($1, $2, $3)`, [
+        site,
+        ip,
+        userAgent,
+      ]);
 
       const res = await client.query('SELECT COUNT(*) as total FROM visits');
       const total = res.rows[0]?.total ?? 0;
@@ -47,7 +63,11 @@ export async function POST(req: NextRequest) {
       if (isDbError(err) && err.code === '23505') {
         const res = await client.query('SELECT COUNT(*) as total FROM visits');
         const total = res.rows[0]?.total ?? 0;
-        return NextResponse.json({ success: true, message: 'Visit already registered', total: Number(total) });
+        return NextResponse.json({
+          success: true,
+          message: 'Visit already registered',
+          total: Number(total),
+        });
       }
       throw err;
     } finally {
@@ -57,10 +77,6 @@ export async function POST(req: NextRequest) {
     console.error(error);
     return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
-}
-
-export async function GET() {
-  return NextResponse.json({ success: false, error: 'GET method not allowed' }, { status: 405 });
 }
 
 export async function PUT() {

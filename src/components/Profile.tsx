@@ -13,10 +13,14 @@ export default function Profile() {
   const [views, setViews] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('/api/views', { method: 'POST' })
+    fetch('/api/views', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'count' }),
+    })
       .then((res) => res.json())
       .then((data) => {
-        if (data.total) setViews(data.total);
+        if (data.total !== undefined) setViews(data.total);
       })
       .catch(console.error);
   }, []);
