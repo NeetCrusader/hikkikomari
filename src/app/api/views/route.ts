@@ -17,6 +17,10 @@ function getSiteFromHost(req: NextRequest): string | null {
   return host.replace(/^www\./, '');
 }
 
+function isDbError(err: unknown): err is { code: string } {
+  return typeof err === 'object' && err !== null && 'code' in err;
+}
+
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
   const userAgent = req.headers.get('user-agent');
@@ -24,7 +28,7 @@ export async function POST(req: NextRequest) {
 
   if (!ip || !userAgent || !site) {
     return NextResponse.json(
-      { success: false, error: 'Missing required headers (ip, user-agent, or host)' },
+      { success: false, error: 'Missing required headers' },
       { status: 400 },
     );
   }
@@ -32,38 +36,35 @@ export async function POST(req: NextRequest) {
   try {
     const client = await pool.connect();
 
-    await client.query(
-      `INSERT INTO visits (site, ip, user_agent) 
-       VALUES ($1, $2, $3)`,
-      [site, ip, userAgent],
-    );
-
-    client.release();
-
-    return NextResponse.json({ success: true });
+    try {
+      await client.query(`INSERT INTO visits (site, ip, user_agent) VALUES ($1, $2, $3)`, [
+        site,
+        ip,
+        userAgent,
+      ]);
+      return NextResponse.json({ success: true });
+    } catch (err: unknown) {
+      if (isDbError(err) && err.code === '23505') {
+        return NextResponse.json({ success: true, message: 'Visit already registered' });
+      }
+      throw err;
+    } finally {
+      client.release();
+    }
   } catch (error) {
-    console.error('Error while registering visit:', error);
+    console.error(error);
     return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
 
-export async function GET(req: NextRequest) {
-  const site = getSiteFromHost(req);
+export async function GET() {
+  return NextResponse.json({ success: false, error: 'GET method not allowed' }, { status: 405 });
+}
 
-  if (!site) {
-    return NextResponse.json({ success: false, error: 'Missing host header' }, { status: 400 });
-  }
+export async function PUT() {
+  return NextResponse.json({ success: false, error: 'PUT method not allowed' }, { status: 405 });
+}
 
-  try {
-    const client = await pool.connect();
-    const result = await client.query(`SELECT COUNT(*)::int AS total FROM visits WHERE site = $1`, [
-      site,
-    ]);
-    client.release();
-
-    return NextResponse.json({ total: result.rows[0].total });
-  } catch (error) {
-    console.error('Error while fetching visits:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
+export async function DELETE() {
+  return NextResponse.json({ success: false, error: 'DELETE method not allowed' }, { status: 405 });
 }
