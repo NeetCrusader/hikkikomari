@@ -11,9 +11,7 @@ export default function Profile() {
   const [presence, setPresence] = useState<Presence | null>(null);
 
   useEffect(() => {
-    const socket = new WebSocket(
-      'wss://richpresence-production.up.railway.app/presence/582364745818963989',
-    );
+    const socket = new WebSocket(process.env.NEXT_PUBLIC_RICH_PRESENCE_WS as string);
 
     const handleOpen = () => {
       console.log('WebSocket connected');
