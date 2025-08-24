@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 export default function DynamicTitleUpdater() {
   useEffect(() => {
-    const socket = new WebSocket(process.env.NEXT_PUBLIC_RICH_PRESENCE_WS as string);
+    const socket = new WebSocket(process.env.RICH_PRESENCE as string);
 
     const handleOpen = () => {
       console.log('WebSocket connected');
