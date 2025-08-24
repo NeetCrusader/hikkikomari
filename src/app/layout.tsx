@@ -11,26 +11,23 @@ const inter = Inter({
   display: 'swap',
 });
 
-export const generateMetadata = (): ReturnType<typeof Metadata> => {
+export const generateMetadata = () => {
   return Metadata({
     title: {
       default: 'hi!!!',
       template: '%title%',
     },
     canonicalUrl: 'https://hikkikomari.lol',
-
     description: ' ͝ ꒡⠀† ݁  ⏝∔⏝  ݁ †⠀꒡ ͝',
     openGraph: {
       title: 'hi!!!',
       description: ' ͝ ꒡⠀† ݁  ⏝∔⏝  ݁ †⠀꒡ ͝',
       siteName: 'neeurotica',
     },
-
     mobileApp: {
       themeColor: '#ffffff',
       msapplicationTileColor: '#191919',
     },
-
     securityMetaTags: [
       { httpEquiv: 'Content-Security-Policy', content: "default-src 'self'" },
       { httpEquiv: 'X-Content-Type-Options', content: 'nosniff' },
