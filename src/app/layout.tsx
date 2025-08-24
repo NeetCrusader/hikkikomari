@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google';
 import OverlayWrapper from '@/components/OverlayWrapper';
 import DynamicTitleUpdater from '@/components/DynamicTitleUpdater';
+import RegisterVisit from '@/components/RegisterVisit';
 import { Analytics } from '@vercel/analytics/next';
 import { metadata } from 'amphibian-seo';
 import '@/lib/fontawesome';
@@ -42,6 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={`${inter.variable} font-sans subpixel-antialiased`}>
         <Analytics />
+        <RegisterVisit />
         <OverlayWrapper>
           <DynamicTitleUpdater />
           {children}
