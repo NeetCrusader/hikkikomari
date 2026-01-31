@@ -1,6 +1,6 @@
 {
   "name": "hikkikomari.lol",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "private": true,
   "scripts": {
     "format": "biome format --write .",
@@ -24,7 +24,7 @@
     "amphibian-seo": "^1.2.9",
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.540.0",
-    "next": "15.4.6",
+    "next": "15.4.10",
     "pg": "^8.16.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",

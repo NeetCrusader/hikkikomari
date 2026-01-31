@@ -1,9 +1,9 @@
+import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import OverlayWrapper from '@/components/OverlayWrapper';
 import DynamicTitleUpdater from '@/components/DynamicTitleUpdater';
 import RegisterVisit from '@/components/RegisterVisit';
 import { Analytics } from '@vercel/analytics/next';
-import { metadata } from 'amphibian-seo';
 import '@/lib/fontawesome';
 import './globals.css';
 
@@ -13,29 +13,23 @@ const inter = Inter({
   display: 'swap',
 });
 
-export const generateMetadata = () => {
-  return metadata({
-    title: {
-      default: 'hi!!!',
-      template: '%title%',
-    },
-    canonicalUrl: 'https://hikkikomari.lol',
+export const metadata: Metadata = {
+  title: {
+    default: 'hi!!!',
+    template: '%s',
+  },
+  description: ' ͝ ꒡⠀† ݁  ⏝∔⏝  ݁ †⠀꒡ ͝',
+  metadataBase: new URL('https://hikkikomari.lol'),
+  openGraph: {
+    title: 'hi!!!',
     description: ' ͝ ꒡⠀† ݁  ⏝∔⏝  ݁ †⠀꒡ ͝',
-    openGraph: {
-      title: 'hi!!!',
-      description: ' ͝ ꒡⠀† ݁  ⏝∔⏝  ݁ †⠀꒡ ͝',
-      siteName: 'neeurotica',
-      type: 'website',
-    },
-    mobileApp: {
-      themeColor: '#ffffff',
-      msapplicationTileColor: '#191919',
-    },
-    securityMetaTags: [
-      { httpEquiv: 'Content-Security-Policy', content: "default-src 'self'" },
-      { httpEquiv: 'X-Content-Type-Options', content: 'nosniff' },
-    ],
-  });
+    siteName: 'neeurotica',
+    type: 'website',
+  },
+  themeColor: '#ffffff',
+  other: {
+    'msapplication-TileColor': '#191919',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
