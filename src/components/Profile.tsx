@@ -66,14 +66,14 @@ export default function Profile() {
       <div className="flex flex-col items-center space-y-4">
         <SvgImage
           src={presence.pfp}
-          alt={presence.tag}
+          alt={presence._dn}
           width={96}
           height={96}
           className="rounded-full"
         />
 
         <div className="flex flex-col items-center space-y-1">
-          <h1 className="text-xl font-bold text-center text-neutral-100">{presence.tag}</h1>
+          <h1 className="text-xl font-bold text-center text-neutral-100">{presence._dn}</h1>
 
           {presence.customStatus?.name && (
             <div className="flex items-center gap-2">
