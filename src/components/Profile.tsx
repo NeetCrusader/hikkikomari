@@ -1,9 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Tilt } from 'react-tilt';
 import type { Presence } from '@/typings';
 import Loading from './Loading';
 import PresenceCard from './PresenceCard';
+import Avatar from './Avatar';
+import Decoration from './Decoration';
 import SvgImage from './SvgImage';
 import SocialLinks from './SocialLinks';
 import Views from './Views';
@@ -61,16 +64,20 @@ export default function Profile() {
   if (!presence) return <Loading />;
 
   return (
-    <div className="relative bg-black/10 border border-neutral-600/20 w-full max-w-xl mx-auto p-8 rounded-lg shadow-lg backdrop-blur-sm">
+    <Tilt options={{ max: 15, scale: 1, speed: 400 }}>
+    <div className="relative bg-black/10 border border-neutral-600/20 max-w-xl w-xl mx-auto p-8 rounded-lg shadow-lg backdrop-blur-sm">
       <Views views={views} />
       <div className="flex flex-col items-center space-y-4">
-        <SvgImage
-          src={presence.pfp}
-          alt={presence._dn}
-          width={96}
-          height={96}
-          className="rounded-full"
-        />
+        <div className="relative inline-block">
+          <Avatar
+            src={presence.pfp}
+            alt={presence._dn}
+            width={96}
+            height={96}
+            className="rounded-full"
+          />
+          <Decoration src="/1cae76b3-9e62-4efa-9efb-9e5227d5986f.png" size={120} />
+        </div>
 
         <div className="flex flex-col items-center space-y-1">
           <h1 className="text-xl font-bold text-center text-neutral-100">{presence._dn}</h1>
@@ -106,6 +113,7 @@ export default function Profile() {
 
         <SocialLinks />
       </div>
-    </div>
+      </div>
+    </Tilt>
   );
 }

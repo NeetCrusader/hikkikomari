@@ -1,6 +1,6 @@
 {
   "name": "hikkikomari.lol",
-  "version": "1.1.9",
+  "version": "1.2.0",
   "private": false,
   "scripts": {
     "format": "biome format --write .",
@@ -27,7 +27,8 @@
     "pg": "^8.18.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-responsive-carousel": "^3.2.23"
+    "react-responsive-carousel": "^3.2.23",
+    "react-tilt": "^1.0.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",

@@ -110,7 +110,6 @@ export default function PresenceCard({
       viewport={{ amount: 0.1, once: true }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
       aria-label="Activities Carousel"
     >
       <Carousel
