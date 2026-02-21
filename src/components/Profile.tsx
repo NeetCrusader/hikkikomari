@@ -65,54 +65,54 @@ export default function Profile() {
 
   return (
     <Tilt options={{ max: 15, scale: 1, speed: 400 }}>
-    <div className="relative bg-black/10 border border-neutral-600/20 max-w-xl w-xl mx-auto p-8 rounded-lg shadow-lg backdrop-blur-sm">
-      <Views views={views} />
-      <div className="flex flex-col items-center space-y-4">
-        <div className="relative inline-block">
-          <Avatar
-            src={presence.pfp}
-            alt={presence._dn}
-            width={96}
-            height={96}
-            className="rounded-full"
-          />
-          <Decoration src="/1cae76b3-9e62-4efa-9efb-9e5227d5986f.png" size={120} />
-        </div>
+      <div className="relative bg-black/10 border border-neutral-600/20 max-w-xl w-xl mx-auto p-8 rounded-lg shadow-lg backdrop-blur-sm">
+        <Views views={views} />
+        <div className="flex flex-col items-center space-y-4">
+          <div className="relative inline-block">
+            <Avatar
+              src={presence.pfp}
+              alt={presence._dn}
+              width={96}
+              height={96}
+              className="rounded-full"
+            />
+            <Decoration src="/1cae76b3-9e62-4efa-9efb-9e5227d5986f.png" size={120} />
+          </div>
 
-        <div className="flex flex-col items-center space-y-1">
-          <h1 className="text-xl font-bold text-center text-neutral-100">{presence._dn}</h1>
+          <div className="flex flex-col items-center space-y-1">
+            <h1 className="text-xl font-bold text-center text-neutral-100">{presence._dn}</h1>
 
-          {presence.customStatus?.name && (
-            <div className="flex items-center gap-2">
-              {presence.customStatus.emoji && (
-                <SvgImage
-                  src={presence.customStatus.emoji}
-                  alt={presence.customStatus.name}
-                  width={18}
-                  height={18}
-                  className="object-contain"
-                />
-              )}
-              <p className="text-sm text-neutral-300/60 text-center font-semibold">
-                {presence.customStatus.name}
-              </p>
-            </div>
+            {presence.customStatus?.name && (
+              <div className="flex items-center gap-2">
+                {presence.customStatus.emoji && (
+                  <SvgImage
+                    src={presence.customStatus.emoji}
+                    alt={presence.customStatus.name}
+                    width={18}
+                    height={18}
+                    className="object-contain"
+                  />
+                )}
+                <p className="text-sm text-neutral-300/60 text-center font-semibold">
+                  {presence.customStatus.name}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {presence.activities.length > 0 && (
+            <PresenceCard
+              presence={presence}
+              date={new Date()}
+              direction="bottom"
+              span={2}
+              gradient="bg-gradient-to-r from-primary to-secondary"
+              delay={0.2}
+            />
           )}
+
+          <SocialLinks />
         </div>
-
-        {presence.activities.length > 0 && (
-          <PresenceCard
-            presence={presence}
-            date={new Date()}
-            direction="bottom"
-            span={2}
-            gradient="bg-gradient-to-r from-primary to-secondary"
-            delay={0.2}
-          />
-        )}
-
-        <SocialLinks />
-      </div>
       </div>
     </Tilt>
   );
